@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>webRotate</title>
+    <style type="text/css">
+        body{
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background: #F0F0F0;
+        }
+    </style>
+    <script type="text/javascript" src="js/konva.min.js"></script>
+    <script type="text/javascript" src="js/webRotate.js"></script>
+    <script type="text/javascript">
+        window.onload=function(){
+            var stage=new Konva.Stage({
+                container:'container',
+                width:window.innerWidth,
+                height:window.innerHeight
+            });
+
+            //定义全局变量
+            var centerX=stage.width()/2,
+                centerY=stage.height()/2,
+                L3_Radius = 217,
+                L2_Radius = 125,
+                L1_Radius = 90,
+                L0_Radius = 66;
+
+            var layer=new Konva.Layer();
+
+            var group=new Konva.Group({
+                x:centerX,
+                y:centerY
+            });
+
+            //背景层中圆的group
+            var middleGroup=new Konva.Group({
+                x:centerX,
+                y:centerY
+            });
+
+            var bigGroup=new Konva.Group({
+                x:centerX,
+                y:centerY
+            });
+            
+
+            //背景层大圆上的五个小球的数据
+            var bigData = [{
+                text: "WebApp",
+                innerRadius: 40,
+                outerRadius: 50,
+                fontSize: 14,
+                fontFamily: '微软雅黑',
+                fontFill: "#fff",
+                x: L3_Radius,
+                y: 0,
+                x: (Math.cos(20 * Math.PI / 180) * L3_Radius),
+                y: (Math.sin(20 * Math.PI / 180) * L3_Radius),
+                innerColor: "#CF2782",
+                outerColor: "#ddd",
+                opacity: .7
+            },{
+                text: "canvas",//动态创建第2个group
+                innerRadius: 40,
+                outerRadius: 50,
+                fontSize: 16    ,
+                fontFamily: '微软雅黑',
+                fontFill: "purple",
+                x: 0,
+                y: L3_Radius,
+                innerColor: "#7CB9CE",
+                outerColor: "#ddd",
+                opacity: .7
+            },{
+                text: "ReactJS",
+                innerRadius: 40,
+                outerRadius: 50,
+                fontSize: 16    ,
+                fontFamily: '微软雅黑',
+                fontFill: "purple",
+                x: -L3_Radius,
+                y: 0,
+                innerColor: "#68AAFC",
+                outerColor: "#ddd",
+                opacity: .7
+            },{
+                text: "NodeJS",
+                innerRadius: 40,
+                outerRadius: 50,
+                fontSize: 16    ,
+                fontFamily: '微软雅黑',
+                fontFill: "purple",
+                x: (Math.cos(-115 * Math.PI / 180) * L3_Radius),
+                y: (Math.sin(-115 * Math.PI / 180) * L3_Radius),
+                innerColor: "yellow",
+                outerColor: "#ddd",
+                opacity: .7
+            },{
+                text: "HTML5",
+                innerRadius: 40,
+                outerRadius: 50,
+                fontSize: 16    ,
+                fontFamily: '微软雅黑',
+                fontFill: "purple",
+                x: (Math.cos(-45 * Math.PI / 180) * L3_Radius),
+                y: (Math.sin(-45 * Math.PI / 180) * L3_Radius),
+                innerColor: "green",
+                outerColor: "#ddd",
+                opacity: .7
+            }];
+
+            //背景层中圆上的两个小球的数据
+            var middleData=[{
+                x:Math.cos(105 * Math.PI /180) *L2_Radius,
+                y:Math.sin(105 * Math.PI /180) *L2_Radius,
+                innerRadius:30,
+                outerRadius:40,
+                innerColor:'pink',
+                outerColor:'#ddd',
+                fontSize:14,
+                fontFamily:'微软雅黑',
+                fontFill:'blue',
+                text:'CSS3',
+                opacity:.7
+            },{
+                x:Math.cos(-75 * Math.PI /180) *L2_Radius,
+                y:Math.sin(-75 * Math.PI /180) *L2_Radius,
+                innerRadius:30,
+                outerRadius:40,
+                innerColor:'orange',
+                outerColor:'#ddd',
+                fontSize:14,
+                fontFamily:'微软雅黑',
+                fontFill:'blue',
+                text:'zeptoJS',
+                opacity:.7
+            }];
+        
+            var bgCircle=new WebRotate({
+                x:centerX,
+                y:centerY,
+                radius:L0_Radius,
+                innerRadius:L0_Radius,
+                outerRadius:L1_Radius,
+                innerColor:'#2A3466',
+                outerColor:'#ddd',
+                fontSize:18,
+                fontFamily:'微软雅黑',
+                text:'Web全栈'
+            });
+            bgCircle.addToGroupOrLayer(layer);
+
+            //2)绘制背景层的中圆
+            var middleCircle=new Konva.Circle({
+                x: 0,
+                y: 0,
+                radius: L2_Radius,
+                stroke: '#ccc',
+                strokeWidth: 3,
+                dash:[12,4]
+            });
+            
+            //3)绘制背景层的大圆
+            var bigCircle=new Konva.Circle({
+                x: 0,
+                y: 0,
+                radius: L3_Radius,
+                stroke: '#ccc',
+                strokeWidth: 2,
+                opacity:.6,
+                dash:[10,4]
+            });
+         
+            group.add(middleCircle);
+            group.add(bigCircle);
+
+            //3)绘制中圆上的两个小球
+            for(var i=0;i<middleData.length;i++){
+                var smallBall=new WebRotate(middleData[i]);
+                smallBall.addToGroupOrLayer(middleGroup);
+            }
+           
+            //4)绘制大圆上的五个小球
+            for(var i=0;i<bigData.length;i++){
+                var smallBall=new WebRotate(bigData[i]);
+                smallBall.addToGroupOrLayer(bigGroup);
+            }
+
+            layer.add(group);
+            layer.add(middleGroup);
+            layer.add(bigGroup);
+
+            var preSecondAngle = 60;
+            var anim = new Konva.Animation(function(frame) {//每帧会调用一次
+                //frame.timeDiff:两帧动画之间的时间间隔
+                //旋转公式：trueAngel / this.secondAngle= frame.timeDiff / 1000;
+                var temple = preSecondAngle * frame.timeDiff / 1000;
+                middleGroup.rotate(temple);
+                middleGroup.getChildren().each(function(item,index){
+                    item.rotate(temple);
+                });
+
+                bigGroup.rotate(-temple);
+                bigGroup.getChildren().each(function(item,index){
+                    item.rotate(-temple);
+                });
+             }, layer);//动画发生的层
+
+            anim.start();
+            stage.add(layer);
+
+            layer.on('mouseover',function(){
+                preSecondAngle=30;
+            });
+            layer.on('mouseout',function(){
+                preSecondAngle=60;
+            });
+        }
+    </script>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>

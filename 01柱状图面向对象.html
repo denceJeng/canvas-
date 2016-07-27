@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>柱状图面向对象</title>
+    <style type="text/css">
+        body{
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background: #F0F0F0;
+        }
+    </style>
+    <script type="text/javascript" src="js/konva.min.js"></script>
+    <script type="text/javascript" src="js/histogram.js"></script>
+    <script type="text/javascript">
+        window.onload=function(){
+            var stage=new Konva.Stage({
+                container:"container",
+                width:window.innerWidth,
+                height:window.innerHeight
+            });
+
+            var data = [
+                { name: '百度', value: .2, color: 'blue' },
+                { name: '阿里', value: .4, color: 'red' },
+                { name: '新浪', value: .1, color: 'purple' },
+                { name: '搜狐', value: .1, color: 'navy' },
+                { name: '360', value: .2, color: 'orange'  }
+            ];
+
+            var layer=new Konva.Layer();
+            var histogram=new Histogram({
+                x:1 / 8 * stage.width(),
+                y:3 / 4 * stage.height(),
+                maxWidth:3 / 4 * stage.width(),
+                maxHeight:3 / 4 * stage.height(),
+                data:data,
+                length:3 / 4 * stage.width() / data.length
+            });
+
+            histogram.addToGroupOrLayer(layer);
+            histogram.moveTo();
+            stage.add(layer);
+        }
+    </script>
+</head>
+<body>
+    <div id="container"></div>
+</body>
+</html>
